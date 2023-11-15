@@ -1,0 +1,24 @@
+<launch>
+  <!-- This launchfile should bring up a node that broadcasts a ros image
+       transport on /webcam/image_raw -->
+
+  <arg name="name" default="front_cam"/>
+  <arg name="port" default="10000"/>
+  <arg name="tf_pub" default="false"/>
+
+  <!-- Construct the v4l2src format config -->
+
+  <group ns="imx390">
+    <node ns="$(arg name)" name="imx390_gscam_driver" pkg="gscam" type="gscam" output="screen">
+      <param name="camera_name" value="default"/>
+      <!-- <param name="camera_name" value="$(arg name)"/> -->
+      <param name="camera_info_url" value="package://gscam/config/default_param.ini"/>
+      <param name="gscam_config" 
+        value="udpsrc buffer_size=9216000 port=$(arg port) ! application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)RAW, sampling=(string)YCbCr-4:2:2, depth=(string)8, width=(string)1920, height=(string)1080, colorimetry=(string)BT601-5, payload=(int)96, a-framerate=(string)30 ! rtpjitterbuffer latency=30 ! rtpvrawdepay ! videoconvert"/>
+      <param name="frame_id" value="/front_cam"/>
+      <param name="sync_sink" value="true"/>
+    </node>
+  </group>
+
+  <node if="$(arg tf_pub)" name="$(arg name)_transform" pkg="tf" type="static_transform_publisher" args="1 2 3 0 -3.141 0 /vehicle_frame /$(arg name) 10"/>
+</launch>

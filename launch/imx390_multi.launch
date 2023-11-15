@@ -1,0 +1,27 @@
+<launch>
+  <arg name="tf_pub" default="false"/>
+  
+  <include file="$(find gscam)/launch/imx390_single.launch">
+    <arg name="name" default="front_cam"/>
+    <arg name="port" default="10000"/>
+    <arg name="tf_pub" default="$(arg tf_pub)"/>
+  </include>
+  
+  <include file="$(find gscam)/launch/imx390_single.launch">
+    <arg name="name" default="rear_cam"/>
+    <arg name="port" default="10001"/>
+    <arg name="tf_pub" default="$(arg tf_pub)"/>
+  </include>
+  
+  <include file="$(find gscam)/launch/imx390_single.launch">
+    <arg name="name" default="left_cam"/>
+    <arg name="port" default="10002"/>
+    <arg name="tf_pub" default="$(arg tf_pub)"/>
+  </include>
+  
+  <include file="$(find gscam)/launch/imx390_single.launch">
+    <arg name="name" default="right_cam"/>
+    <arg name="port" default="10003"/>
+    <arg name="tf_pub" default="$(arg tf_pub)"/>
+  </include>
+</launch>
